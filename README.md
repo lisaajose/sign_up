@@ -1,4 +1,4 @@
-# Neoxis Auth App
+# An Auth App
 
 A basic authentication web application built with ASP.NET Core 8, ASP.NET Core Identity, Entity Framework Core, and PostgreSQL.
 
