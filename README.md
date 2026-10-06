@@ -1,77 +1,143 @@
-# Neoxis Authentication App
+# Neoxis Auth App
 
-## Project Overview
+A basic authentication web application built with ASP.NET Core 8, ASP.NET Core Identity, Entity Framework Core, and PostgreSQL.
 
-A professional ASP.NET Core web application integrating the **CoolAdmin** Bootstrap template to provide a fully functional authentication system. The application focuses on clean architecture, standard security practices, and a polished user interface.
+The application provides user registration, login, logout, a protected dashboard, and profile functionality. The UI is based on the CoolAdmin Bootstrap admin dashboard template.
 
 ## Features
 
-- **User registration**: Secure account creation capturing Full Name, Email, and Password.
-- **User login**: Authentic Identity-based login system with "Remember Me" functionality.
-- **Authentication**: Validates users against a persistent SQLite database.
-- **Authorization**: Restricts access to the Dashboard and Profile pages. Unauthenticated users are redirected to the Login page.
-- **Protected dashboard**: Displays dynamic information for the authenticated user, such as name, email, and account status.
-- **User profile**: Dedicated page displaying account details.
-- **Logout**: Secure session termination.
-- **Database persistence**: Entity Framework Core with SQLite ensures user accounts survive application restarts.
-- **Validation**: Server-side validation with standard ASP.NET Core Data Annotations.
-- **Secure password handling**: Passwords are mathematically hashed by ASP.NET Core Identity. Never stored in plaintext.
+- User registration
+- User login and logout
+- Remember Me functionality
+- Password validation
+- Secure password hashing using ASP.NET Core Identity
+- Protected dashboard and profile pages
+- User-specific dashboard information
+- PostgreSQL database
+- Entity Framework Core migrations
+- Responsive UI
+- Docker support
+- Render deployment
 
-## Technology Stack
+## Technologies Used
 
-- **C# / ASP.NET Core 8**: Provides a robust, high-performance backend framework.
-- **ASP.NET Core Identity**: Manages authentication, hashing, cookies, and user state securely and out-of-the-box.
-- **Entity Framework Core**: Simplifies database interactions using an Object-Relational Mapper (ORM).
-- **SQLite**: A lightweight, serverless database ideal for a simple reliable development setup.
-- **CoolAdmin Template**: A free Bootstrap 5 admin dashboard template by Colorlib. Used for the UI foundation to ensure a professional look without reinventing the wheel.
+- ASP.NET Core 8
+- C#
+- ASP.NET Core Identity
+- Entity Framework Core 8
+- PostgreSQL
+- Npgsql
+- Bootstrap 5
+- CoolAdmin
+- Docker
+- Render
+- Git / GitHub
 
-## Prerequisites
+## Project Structure
 
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Any modern IDE or Editor (Visual Studio, Visual Studio Code, JetBrains Rider)
-- Git (optional, for cloning)
 
-## Setup
+NeoxisAuthApp/
+│
+├── Controllers/
+├── Data/
+├── Migrations/
+├── Models/
+├── ViewModels/
+├── Views/
+├── wwwroot/
+├── Program.cs
+├── appsettings.json
+├── Dockerfile
+└── NeoxisAuthApp.csproj
 
-1. **Open the project directory**
-   Open your terminal and navigate to the project directory:
-   ```bash
-   cd NeoxisAuthApp
-   ```
+Authentication
+Authentication is implemented using ASP.NET Core Identity.
+Users can:
+- Create an account using their name, email, and password
+- Log in using their registered credentials
+- Stay signed in using Remember Me
+- Log out of their account
+- Access protected pages only after authentication
+Passwords are handled by ASP.NET Core Identity and are not stored as plain text.
+Database
+The application uses PostgreSQL with Entity Framework Core.
+ASP.NET Core Identity manages the user-related tables, including:
+- AspNetUsers
+- AspNetRoles
+- AspNetUserRoles
+- AspNetUserClaims
+- AspNetUserLogins
+- AspNetUserTokens
+Database migrations are included in the project.
+Configuration
+The application uses a PostgreSQL connection string provided through environment variables in the production environment.
+For local development, configure the database connection in your local application settings.
+Example:
+Host=localhost;
+Port=5432;
+Database=NeoxisAuth;
+Username=postgres;
+Password=your-password;
 
-2. **Restore dependencies**
-   Restore the required NuGet packages:
-   ```bash
-   dotnet restore
-   ```
+Production database credentials should not be committed to the repository.
+Running Locally
+Prerequisites
+- .NET 8 SDK
+- PostgreSQL
+- Git
+Clone the repository
+git clone https://github.com/lisaajose/sign_up.git
+cd sign_up
 
-3. **Apply EF Core migrations**
-   Create and seed the SQLite database using Entity Framework Core tools. (Make sure you have `dotnet-ef` installed):
-   ```bash
-   dotnet ef database update
-   ```
-   *(This will create an `app.db` file in your project directory.)*
+Restore dependencies
+dotnet restore
 
-4. **Run the application**
-   Start the web server:
-   ```bash
-   dotnet run
-   ```
-   The application will usually be available at `http://localhost:5000` or `https://localhost:5001`.
+Apply database migrations
+dotnet ef database update
 
-## Testing
+Run the application
+dotnet run
 
-Follow this flow to manually test the application's capabilities:
+The application will be available at the local URL shown by ASP.NET Core.
+Docker
+The project includes a Dockerfile for containerized deployment.
+Build the Docker image:
+docker build -t neoxis-auth-app .
 
-1. **Register a user**: Click "Create one" on the login page. Fill out the registration form with valid data.
-2. **Verify persistence**: You should be redirected to the Dashboard automatically. The dashboard should display your Full Name and Email dynamically.
-3. **Logout**: Open the account dropdown in the top right corner and click "Logout".
-4. **Authorization Check**: Try accessing `http://localhost:5000/Dashboard` directly. You should be redirected back to the Login page.
-5. **Login**: Use the credentials you just created to sign back in.
-6. **View profile**: Navigate to the Profile page using the sidebar or account dropdown to view your user details.
-7. **Database verification**: Stop the application (`Ctrl+C`), then start it again (`dotnet run`). Your user account will still be active and can be used to log in, proving persistence.
+Run the container:
+docker run -p 8080:8080 neoxis-auth-app
 
-## License & Attribution
+Deployment
+The application is deployed using Render.
+The production database is hosted using Supabase PostgreSQL.
+GitHub → Render → ASP.NET Core → Supabase PostgreSQL
 
-This project incorporates the **CoolAdmin** template by Colorlib.
-Copyright © Colorlib. All rights reserved. Template by [Colorlib](https://colorlib.com).
+The PostgreSQL connection is provided through Render environment variables.
+UI
+The application uses the CoolAdmin Bootstrap admin dashboard template by Colorlib.
+The template is used for the login, registration, dashboard, profile, navigation, and other UI components.
+CoolAdmin is licensed under the MIT License.
+Security
+- ASP.NET Core Identity authentication
+- Password hashing
+- Server-side validation
+- Authentication cookies
+- Authorization for protected pages
+- Anti-forgery protection
+- Production database credentials stored as environment variables
+Testing
+The following authentication flows can be tested:
+1. Register a new account
+2. Log in with valid credentials
+3. Try logging in with invalid credentials
+4. Access the dashboard after login
+5. Log out
+6. Try accessing the dashboard after logout
+7. Register another account
+8. Verify that each account displays its own information
+Author
+Lisa Jose
+GitHub:
+https://github.com/lisaajose
+Repository:
+https://github.com/lisaajose/sign_up
