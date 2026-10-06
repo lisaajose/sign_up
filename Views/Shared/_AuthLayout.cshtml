@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewData["Title"] | Neoxis Auth App</title>
+    
+    <link href="~/css/font-face.css" rel="stylesheet" media="all" />
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    <link href="~/vendor/fontawesome-7.3.1/css/all.min.css" rel="stylesheet" media="all" />
+    <link href="~/vendor/bootstrap-5.3.8.min.css" rel="stylesheet" media="all" />
+    <link href="~/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all" />
+    <link href="~/css/theme.css" rel="stylesheet" media="all" />
+    <link href="~/css/app.css" rel="stylesheet" media="all" />
+</head>
+<body class="app auth-page">
+    @RenderBody()
+
+    <script src="~/js/vanilla-utils.js"></script>
+    <script src="~/vendor/bootstrap-5.3.8.bundle.min.js"></script>
+    <script src="~/js/bootstrap5-init.js"></script>
+    <script src="~/js/main-vanilla.js"></script>
+    <script src="~/js/modern-plugins.js"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

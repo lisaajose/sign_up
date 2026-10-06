@@ -1,0 +1,39 @@
+@model NeoxisAuthApp.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="page-header">
+    <div>
+        <h1>Profile & Settings</h1>
+        <p class="subtitle">Manage your account information.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="m-card">
+            <header class="m-card__header">
+                <h2 class="m-card__title">Account Information</h2>
+            </header>
+            <div class="m-card__body p-4">
+                <div class="form-group mb-3">
+                    <label class="form-label font-weight-bold">Full Name</label>
+                    <input type="text" class="au-input au-input--full" value="@Model.FullName" disabled />
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label font-weight-bold">Email Address</label>
+                    <input type="email" class="au-input au-input--full" value="@Model.Email" disabled />
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label font-weight-bold">Account Created</label>
+                    <input type="text" class="au-input au-input--full" value="@Model.CreatedAt.ToString("g")" disabled />
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fa-solid fa-info-circle me-2"></i> This is a demo application. Editing profile information is disabled.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

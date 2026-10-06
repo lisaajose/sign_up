@@ -1,0 +1,21 @@
+## .NET / ASP.NET Core
+*.user
+*.suo
+.vs/
+obj/
+bin/
+
+## EF Core local database files — NEVER commit
+*.db
+*.db-shm
+*.db-wal
+
+## User secrets (local overrides)
+appsettings.Development.json
+
+## Build output
+publish/
+
+## OS
+.DS_Store
+Thumbs.db

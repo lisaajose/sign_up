@@ -1,0 +1,53 @@
+@model NeoxisAuthApp.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Create Account";
+    Layout = "_AuthLayout";
+}
+
+<main class="login-wrap" id="auth-form">
+    <div class="login-content">
+        <a href="~/" class="auth-brand" aria-label="Neoxis home">
+            <span class="logo-mark" aria-hidden="true">N</span>
+            <span class="logo-text">Neoxis</span>
+        </a>
+        <h1 class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Join Neoxis today.</p>
+
+        <form class="login-form" asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" style="margin-bottom:15px;"></div>
+            
+            <div class="form-group">
+                <label asp-for="FullName">Full Name</label>
+                <input asp-for="FullName" class="au-input" placeholder="Jane Doe" required />
+                <span asp-validation-for="FullName" class="text-danger" style="font-size:0.8em;"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email address</label>
+                <input asp-for="Email" class="au-input" placeholder="you@example.com" autocomplete="email" required />
+                <span asp-validation-for="Email" class="text-danger" style="font-size:0.8em;"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" class="au-input" placeholder="At least 6 characters" autocomplete="new-password" required />
+                <span asp-validation-for="Password" class="text-danger" style="font-size:0.8em;"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ConfirmPassword">Confirm Password</label>
+                <input asp-for="ConfirmPassword" class="au-input" placeholder="At least 6 characters" autocomplete="new-password" required />
+                <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size:0.8em;"></span>
+            </div>
+            
+            <button class="au-btn au-btn--green" type="submit">Create account</button>
+        </form>
+
+        <div class="register-link">
+            <p>Already have an account? <a asp-action="Login">Sign in</a></p>
+        </div>
+    </div>
+</main>
+
+
