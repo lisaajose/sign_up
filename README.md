@@ -135,6 +135,9 @@ The following authentication flows can be tested:
 6. Try accessing the dashboard after logout
 7. Register another account
 8. Verify that each account displays its own information
+
+
+
 Author
 Lisa Jose
 GitHub:
