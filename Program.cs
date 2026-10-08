@@ -95,6 +95,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Configure Forwarded Headers for reverse proxies like Render
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
