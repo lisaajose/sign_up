@@ -1,146 +1,159 @@
-# An Auth App
+# Neoxis Authentication App
 
-A basic authentication web application built with ASP.NET Core 8, ASP.NET Core Identity, Entity Framework Core, and PostgreSQL.
+A professional authentication web application built with **ASP.NET Core 8**, **ASP.NET Core Identity**, **Entity Framework Core**, and **PostgreSQL (Supabase)**.
 
-The application provides user registration, login, logout, a protected dashboard, and profile functionality. The UI is based on the CoolAdmin Bootstrap admin dashboard template.
+The application provides user registration, email/password login, **Sign in with Google**, **Sign in with Microsoft**, logout, protected dashboard, and profile functionality. The UI is integrated with the **CoolAdmin** Bootstrap admin dashboard template.
+
+---
 
 ## Features
 
-- User registration
-- User login and logout
-- Remember Me functionality
-- Password validation
-- Secure password hashing using ASP.NET Core Identity
-- Protected dashboard and profile pages
-- User-specific dashboard information
-- PostgreSQL database
-- Entity Framework Core migrations
-- Responsive UI
-- Docker support
-- Render deployment
+- **User Registration** — Full Name, Email, Password, Confirm Password
+- **Email/Password Login** — with Remember Me support
+- **Sign in with Google** — OAuth via ASP.NET Core external authentication
+- **Sign in with Microsoft** — OAuth via ASP.NET Core external authentication
+- **Account Linking** — External OAuth logins are linked to existing Identity accounts automatically
+- **Protected Dashboard & Profile** — Server-side authorization; unauthenticated users are redirected to login
+- **User-Specific Dashboard** — Dynamically displays user name, email, account status, and registration date
+- **Secure Password Hashing** — Uses standard ASP.NET Core Identity PBKDF2 hashing; passwords are never stored in plain text
+- **CSRF Protection** — Anti-forgery tokens on all sensitive POST forms
+- **Database Persistence** — Supabase PostgreSQL via Entity Framework Core with automatic migrations on startup
+- **Docker Support** — Multi-stage Dockerfile for containerized deployment
+- **Cloud Deployment** — Continuous deployment via Render
+
+---
 
 ## Technologies Used
 
-- ASP.NET Core 8
-- C#
-- ASP.NET Core Identity
-- Entity Framework Core 8
-- PostgreSQL
-- Npgsql
-- Bootstrap 5
-- CoolAdmin
-- Docker
-- Render
-- Git / GitHub
+| Technology | Purpose |
+|---|---|
+| **ASP.NET Core 8 MVC** | Web backend framework |
+| **ASP.NET Core Identity** | Authentication, password hashing, and user management |
+| **Entity Framework Core 8** | ORM and database migrations |
+| **Npgsql EF Core Provider** | PostgreSQL database provider |
+| **Microsoft.AspNetCore.Authentication.Google** | Google OAuth authentication handler |
+| **Microsoft.AspNetCore.Authentication.MicrosoftAccount** | Microsoft OAuth authentication handler |
+| **Supabase** | Managed cloud PostgreSQL database |
+| **CoolAdmin (Colorlib)** | Bootstrap 5 admin dashboard UI template |
+| **Docker** | Containerization for deployment |
+| **Render** | Cloud hosting web service |
+
+---
 
 ## Project Structure
 
-
+```text
 NeoxisAuthApp/
 │
 ├── Controllers/
+│   ├── AccountController.cs    # Login, Register, Logout, External OAuth callbacks
+│   ├── DashboardController.cs  # Protected Dashboard & Profile
+│   └── HomeController.cs       # Root redirection
 ├── Data/
-├── Migrations/
+│   └── ApplicationDbContext.cs # EF Core DbContext for Identity
+├── Migrations/                 # EF Core database migrations
 ├── Models/
-├── ViewModels/
+│   └── ApplicationUser.cs      # Custom Identity user model (FullName, CreatedAt)
+├── ViewModels/                 # Login & Register view models
 ├── Views/
-├── wwwroot/
-├── Program.cs
-├── appsettings.json
-├── Dockerfile
-└── NeoxisAuthApp.csproj
+│   ├── Account/                # Login, Register, AccessDenied
+│   ├── Dashboard/              # Protected Index & Profile views
+│   └── Shared/                 # _Layout, _AuthLayout
+├── wwwroot/                    # CoolAdmin assets (CSS, JS, images, fonts, vendors)
+├── Dockerfile                  # Multi-stage Docker build file
+├── Program.cs                  # Service configuration, Identity, OAuth, Middleware
+└── appsettings.json            # Configuration and connection strings
+```
 
-Authentication
-Authentication is implemented using ASP.NET Core Identity.
-Users can:
-- Create an account using their name, email, and password
-- Log in using their registered credentials
-- Stay signed in using Remember Me
-- Log out of their account
-- Access protected pages only after authentication
-Passwords are handled by ASP.NET Core Identity and are not stored as plain text.
-Database
-The application uses PostgreSQL with Entity Framework Core.
-ASP.NET Core Identity manages the user-related tables, including:
-- AspNetUsers
-- AspNetRoles
-- AspNetUserRoles
-- AspNetUserClaims
-- AspNetUserLogins
-- AspNetUserTokens
-Database migrations are included in the project.
-Configuration
-The application uses a PostgreSQL connection string provided through environment variables in the production environment.
-For local development, configure the database connection in your local application settings.
-Example:
-Host=localhost;
-Port=5432;
-Database=NeoxisAuth;
-Username=postgres;
-Password=your-password;
+---
 
-Production database credentials should not be committed to the repository.
-Running Locally
-Prerequisites
-- .NET 8 SDK
-- PostgreSQL
+## Required Environment Variables (Production / Render)
+
+| Variable | Description | Where to set |
+|---|---|---|
+| `DATABASE_URL` | Supabase PostgreSQL connection URI | Render → Environment |
+| `GOOGLE_CLIENT_ID` | Google OAuth Client ID | Render → Environment |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth Client Secret | Render → Environment |
+| `MICROSOFT_CLIENT_ID` | Microsoft Entra/Azure App Client ID | Render → Environment |
+| `MICROSOFT_CLIENT_SECRET` | Microsoft Entra/Azure App Client Secret | Render → Environment |
+
+> **Security Note:** Never commit database credentials or OAuth secrets into GitHub. In Render, provide them under the **Environment** settings. The application boots and operates normally even if OAuth credentials are not yet set.
+
+---
+
+## OAuth Callback URLs
+
+Configure these exact redirect URIs in each respective provider console:
+
+### Google (Google Cloud Console → Credentials → OAuth 2.0 Client)
+- **Local:** `http://localhost:5000/signin-google`
+- **Production:** `https://your-app-name.onrender.com/signin-google`
+
+### Microsoft (Azure Portal → App Registrations → Authentication)
+- **Local:** `http://localhost:5000/signin-microsoft`
+- **Production:** `https://your-app-name.onrender.com/signin-microsoft`
+
+---
+
+## Running Locally
+
+### Prerequisites
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- PostgreSQL or Supabase instance
 - Git
-Clone the repository
-git clone https://github.com/lisaajose/sign_up.git
-cd sign_up
 
-Restore dependencies
-dotnet restore
+### Steps
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/lisaajose/sign_up.git
+   cd sign_up
+   ```
 
-Apply database migrations
-dotnet ef database update
+2. **Restore dependencies:**
+   ```bash
+   dotnet restore
+   ```
 
-Run the application
-dotnet run
+3. **Configure local database:**
+   Update the `DefaultConnection` string in `appsettings.json`, then apply migrations:
+   ```bash
+   dotnet ef database update
+   ```
 
-The application will be available at the local URL shown by ASP.NET Core.
-Docker
-The project includes a Dockerfile for containerized deployment.
-Build the Docker image:
-docker build -t neoxis-auth-app .
+4. **Run the app:**
+   ```bash
+   dotnet run --urls "http://localhost:5000"
+   ```
 
-Run the container:
-docker run -p 8080:8080 neoxis-auth-app
+---
 
-Deployment
-The application is deployed using Render.
-The production database is hosted using Supabase PostgreSQL.
-GitHub → Render → ASP.NET Core → Supabase PostgreSQL
+## Deployment Architecture
 
-The PostgreSQL connection is provided through Render environment variables.
-UI
-The application uses the CoolAdmin Bootstrap admin dashboard template by Colorlib.
-The template is used for the login, registration, dashboard, profile, navigation, and other UI components.
-CoolAdmin is licensed under the MIT License.
-Security
-- ASP.NET Core Identity authentication
-- Password hashing
-- Server-side validation
-- Authentication cookies
-- Authorization for protected pages
-- Anti-forgery protection
-- Production database credentials stored as environment variables
-Testing
-The following authentication flows can be tested:
-1. Register a new account
-2. Log in with valid credentials
-3. Try logging in with invalid credentials
-4. Access the dashboard after login
-5. Log out
-6. Try accessing the dashboard after logout
-7. Register another account
-8. Verify that each account displays its own information
+```text
+GitHub (sign_up repo)
+      ↓
+Render (Docker Web Service)
+      ↓
+ASP.NET Core 8 Web App
+      ↓
+Supabase (Cloud PostgreSQL)
+```
 
+1. Code pushed to the `main` branch triggers an automatic build on **Render**.
+2. Render builds the Docker image and launches the application container.
+3. On startup, `Program.cs` automatically applies any pending database migrations to Supabase.
 
+---
 
-Author
-Lisa Jose
-GitHub:
-https://github.com/lisaajose
-Repository:
-https://github.com/lisaajose/sign_up
+## Author
+
+**Lisa Ann Jose**  
+GitHub: [https://github.com/lisaajose](https://github.com/lisaajose)  
+Repository: [https://github.com/lisaajose/sign_up](https://github.com/lisaajose/sign_up)
+
+---
+
+## License & Attribution
+
+UI template: **CoolAdmin** by [Colorlib](https://colorlib.com).  
+Copyright © Colorlib. All rights reserved.
