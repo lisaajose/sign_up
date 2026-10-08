@@ -1,0 +1,18 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "_AuthLayout";
+}
+
+<main class="login-wrap" id="auth-form">
+    <div class="login-content" style="text-align:center;">
+        <a href="~/" class="auth-brand" aria-label="Neoxis home">
+            <span class="logo-mark" aria-hidden="true">N</span>
+            <span class="logo-text">Neoxis</span>
+        </a>
+        <h1 class="auth-title" style="color:#ef4444;">Access Denied</h1>
+        <p class="auth-subtitle">You do not have permission to view this page.</p>
+        <a asp-action="Login" asp-controller="Account" class="au-btn au-btn--green" style="margin-top:20px; display:inline-block;">
+            Back to Login
+        </a>
+    </div>
+</main>
